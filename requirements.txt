@@ -23,3 +23,15 @@ certifi==2026.2.25
 lxml==6.0.2
 annotated-types==0.7.0
 typing-inspection==0.4.2
+email_validator
+flask
+flask-sqlalchemy
+gunicorn
+psycopg2-binary
+flask
+groq
+gunicorn
+pillow
+python-docx
+python-pptx
+reportlab
