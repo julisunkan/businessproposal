@@ -371,6 +371,125 @@ textarea { resize: vertical; min-height: 420px; line-height: 1.6; font-size: .92
   margin-top: .4rem;
 }
 
+/* ── Report button (dashboard & edit) ── */
+.btn-report {
+  background: linear-gradient(135deg, #f59e0b, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 3px 10px rgba(239,68,68,.35);
+  border: none;
+}
+.btn-report:hover {
+  filter: brightness(1.1);
+  text-decoration: none;
+  color: #fff;
+}
+
+/* ── Action group in dashboard table ── */
+.action-group {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Report Modal ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-box {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.75rem 2rem;
+  max-width: 440px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  border: 2px solid transparent;
+  position: relative;
+  animation: modal-in .2s ease;
+}
+.modal-box::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444, #dc2626);
+  z-index: -1;
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: scale(.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: .85rem;
+  margin-bottom: 1rem;
+}
+.modal-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fef2f2, #fffbeb);
+  border: 2px solid #fca5a5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ef4444;
+}
+.modal-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: .15rem;
+}
+.modal-subtitle {
+  font-size: .82rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.modal-close {
+  margin-left: auto;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: .25rem;
+  border-radius: 6px;
+  transition: background .15s, color .15s;
+}
+.modal-close:hover {
+  background: var(--red-bg);
+  color: var(--red-dark);
+}
+.modal-hint {
+  font-size: .84rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 1.1rem;
+  padding: .65rem .85rem;
+  background: var(--yellow-bg);
+  border-left: 3px solid var(--yellow);
+  border-radius: 0 8px 8px 0;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: .6rem;
+  margin-top: .5rem;
+}
+
 /* ── Report button on edit page ── */
 .report-section {
   margin-top: 1.5rem;

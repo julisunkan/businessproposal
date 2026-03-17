@@ -21,7 +21,7 @@
       <th>Business Name</th>
       <th>Proposal Type</th>
       <th>Created Date</th>
-      <th>Action</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -32,15 +32,77 @@
       <td><span class="badge">{{ p.proposal_type }}</span></td>
       <td style="color:var(--muted);">{{ p.created_at }}</td>
       <td>
-        <a href="{{ url_for('edit', proposal_id=p.id) }}" class="btn btn-outline btn-sm">
-          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Edit
-        </a>
+        <div class="action-group">
+          <a href="{{ url_for('edit', proposal_id=p.id) }}" class="btn btn-outline btn-sm">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edit
+          </a>
+          <button class="btn btn-report btn-sm" onclick="openReportModal({{ p.id }}, '{{ p.business_name | e }}')">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Report
+          </button>
+        </div>
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<!-- Report Modal -->
+<div id="report-modal-overlay" class="modal-overlay" onclick="closeReportModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div>
+        <h3 class="modal-title">Report Inappropriate Content</h3>
+        <p class="modal-subtitle" id="modal-proposal-name"></p>
+      </div>
+      <button class="modal-close" onclick="closeReportModal()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <p class="modal-hint">If this AI-generated content is offensive, harmful, or inappropriate, our admin team will review it promptly.</p>
+    <form id="report-modal-form" method="POST">
+      <div class="form-group" style="margin-bottom:.9rem;">
+        <label for="modal-reason" style="font-size:.875rem;">Reason for reporting</label>
+        <select id="modal-reason" name="reason" required>
+          <option value="" disabled selected>Select a reason…</option>
+          <option value="Offensive or harmful language">Offensive or harmful language</option>
+          <option value="Misinformation or false claims">Misinformation or false claims</option>
+          <option value="Spam or irrelevant content">Spam or irrelevant content</option>
+          <option value="Privacy violation">Privacy violation</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeReportModal()">Cancel</button>
+        <button type="submit" class="btn btn-report btn-sm">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          Submit Report
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function openReportModal(proposalId, businessName) {
+    document.getElementById('modal-proposal-name').textContent = businessName;
+    document.getElementById('report-modal-form').action = '/report/' + proposalId;
+    document.getElementById('modal-reason').value = '';
+    document.getElementById('report-modal-overlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeReportModal() {
+    document.getElementById('report-modal-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeReportModal();
+  });
+</script>
 {% else %}
 <div class="empty-state">
   <svg width="56" height="56" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
