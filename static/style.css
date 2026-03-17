@@ -348,7 +348,8 @@ textarea { resize: vertical; min-height: 420px; line-height: 1.6; font-size: .92
   vertical-align: middle;
 }
 .proposals-table tr:last-child td { border-bottom: none; }
-.proposals-table tr:hover td { background: var(--lemon-bg); transition: background .15s; }
+.proposals-table tr.proposal-row:hover td { background: var(--lemon-bg); transition: background .15s; }
+.proposals-table tr.inline-report-row:hover td { background: transparent; }
 
 .empty-state {
   text-align: center;
@@ -392,102 +393,79 @@ textarea { resize: vertical; min-height: 420px; line-height: 1.6; font-size: .92
   flex-wrap: wrap;
 }
 
-/* ── Report Modal ── */
-.modal-overlay {
+/* ── Inline Report Row ── */
+.inline-report-row {
   display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.45);
-  backdrop-filter: blur(3px);
-  z-index: 1000;
+}
+.inline-report-row.open {
+  display: table-row;
+}
+.inline-report-cell {
+  padding: 0 !important;
+  border-bottom: none !important;
+}
+.inline-report-panel {
+  display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: .75rem 1.1rem;
+  background: linear-gradient(90deg, #fef2f2, #fffbeb);
+  border-top: 2px dashed #fca5a5;
+  border-bottom: 2px solid #fca5a5;
+  animation: slide-in .18s ease;
 }
-.modal-overlay.active {
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.inline-report-left {
   display: flex;
-}
-.modal-box {
-  background: var(--white);
-  border-radius: 18px;
-  padding: 1.75rem 2rem;
-  max-width: 440px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0,0,0,.2);
-  border: 2px solid transparent;
-  position: relative;
-  animation: modal-in .2s ease;
-}
-.modal-box::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #f59e0b, #ef4444, #dc2626);
-  z-index: -1;
-}
-@keyframes modal-in {
-  from { opacity: 0; transform: scale(.94) translateY(8px); }
-  to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-.modal-header {
-  display: flex;
-  align-items: flex-start;
-  gap: .85rem;
-  margin-bottom: 1rem;
-}
-.modal-icon {
+  align-items: center;
+  gap: .5rem;
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #fef2f2, #fffbeb);
-  border: 2px solid #fca5a5;
+}
+.inline-report-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ef4444;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #fff;
+  flex-shrink: 0;
 }
-.modal-title {
-  font-size: 1.05rem;
-  font-weight: 800;
+.inline-report-label {
+  font-size: .85rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.inline-report-label strong {
   color: var(--text);
-  margin-bottom: .15rem;
 }
-.modal-subtitle {
-  font-size: .82rem;
-  color: var(--muted);
-  font-weight: 600;
-}
-.modal-close {
-  margin-left: auto;
-  flex-shrink: 0;
-  background: none;
-  border: none;
-  color: var(--muted);
-  cursor: pointer;
-  padding: .25rem;
-  border-radius: 6px;
-  transition: background .15s, color .15s;
-}
-.modal-close:hover {
-  background: var(--red-bg);
-  color: var(--red-dark);
-}
-.modal-hint {
-  font-size: .84rem;
-  color: var(--muted);
-  line-height: 1.55;
-  margin-bottom: 1.1rem;
-  padding: .65rem .85rem;
-  background: var(--yellow-bg);
-  border-left: 3px solid var(--yellow);
-  border-radius: 0 8px 8px 0;
-}
-.modal-footer {
+.inline-report-form {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   gap: .6rem;
-  margin-top: .5rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.inline-report-select {
+  flex: 1;
+  min-width: 180px;
+  padding: .45rem .75rem;
+  border: 2px solid #fca5a5;
+  border-radius: var(--radius);
+  font-size: .85rem;
+  background: #fff;
+  color: var(--text);
+  width: auto;
+}
+.inline-report-select:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,.15);
 }
 
 /* ── Report button on edit page ── */
