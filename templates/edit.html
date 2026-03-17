@@ -13,6 +13,13 @@
 </div>
 {% endif %}
 
+{% if request.args.get('reported') %}
+<div class="msg-success">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+  Thank you — your report has been submitted and will be reviewed by an admin.
+</div>
+{% endif %}
+
 <div class="dash-header">
   <div>
     <h1 class="page-title">{{ proposal.business_name }}</h1>
@@ -55,6 +62,33 @@
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       Download PowerPoint (.pptx)
     </a>
+  </div>
+</div>
+
+<div class="report-section">
+  <button class="report-toggle" onclick="document.getElementById('report-form').classList.toggle('hidden')" type="button">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Report Inappropriate Content
+  </button>
+  <div id="report-form" class="hidden report-form-inner">
+    <p class="report-hint">If this AI-generated content is offensive, harmful, or inappropriate, please let us know. Reports are reviewed by our admin team.</p>
+    <form method="POST" action="{{ url_for('report', proposal_id=proposal.id) }}">
+      <div class="form-group" style="margin-bottom:.75rem;">
+        <label for="reason" style="font-size:.85rem;">Reason for reporting</label>
+        <select id="reason" name="reason" required style="font-size:.9rem;">
+          <option value="" disabled selected>Select a reason…</option>
+          <option value="Offensive or harmful language">Offensive or harmful language</option>
+          <option value="Misinformation or false claims">Misinformation or false claims</option>
+          <option value="Spam or irrelevant content">Spam or irrelevant content</option>
+          <option value="Privacy violation">Privacy violation</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-danger btn-sm">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        Submit Report
+      </button>
+    </form>
   </div>
 </div>
 {% endblock %}

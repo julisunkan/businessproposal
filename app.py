@@ -49,6 +49,15 @@ def init_db():
                 created_at TEXT
             )
         """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS reports (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                proposal_id INTEGER,
+                reason TEXT,
+                reported_at TEXT,
+                FOREIGN KEY (proposal_id) REFERENCES proposals(id)
+            )
+        """)
         # Migrate: add missing columns if upgrading from old schema
         try:
             db.execute("ALTER TABLE proposals ADD COLUMN service TEXT")
@@ -335,11 +344,54 @@ def download_ppt(proposal_id):
                      mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation")
 
 
+@app.route("/report/<int:proposal_id>", methods=["POST"])
+def report(proposal_id):
+    db = get_db()
+    proposal = db.execute("SELECT * FROM proposals WHERE id = ?", (proposal_id,)).fetchone()
+    if not proposal:
+        return redirect(url_for("index"))
+
+    reason = request.form.get("reason", "").strip()
+    if not reason:
+        return redirect(url_for("edit", proposal_id=proposal_id))
+
+    reported_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    db.execute(
+        "INSERT INTO reports (proposal_id, reason, reported_at) VALUES (?, ?, ?)",
+        (proposal_id, reason, reported_at)
+    )
+    db.commit()
+    return redirect(url_for("edit", proposal_id=proposal_id, reported=1))
+
+
 @app.route("/dashboard")
 def dashboard():
     db = get_db()
     proposals = db.execute("SELECT * FROM proposals ORDER BY created_at DESC").fetchall()
     return render_template("dashboard.html", proposals=proposals)
+
+
+@app.route("/admin/delete-report/<int:report_id>", methods=["POST"])
+def delete_report(report_id):
+    key = request.args.get("key", "")
+    if key != ADMIN_SECRET:
+        return redirect(url_for("admin"))
+    db = get_db()
+    db.execute("DELETE FROM reports WHERE id = ?", (report_id,))
+    db.commit()
+    return redirect(url_for("admin") + "?key=" + ADMIN_SECRET + "&deleted=1")
+
+
+@app.route("/admin/delete-proposal/<int:proposal_id>", methods=["POST"])
+def delete_proposal(proposal_id):
+    key = request.args.get("key", "")
+    if key != ADMIN_SECRET:
+        return redirect(url_for("admin"))
+    db = get_db()
+    db.execute("DELETE FROM reports WHERE proposal_id = ?", (proposal_id,))
+    db.execute("DELETE FROM proposals WHERE id = ?", (proposal_id,))
+    db.commit()
+    return redirect(url_for("admin") + "?key=" + ADMIN_SECRET + "&deleted=1")
 
 
 @app.route("/admin", methods=["GET", "POST"])
@@ -350,6 +402,10 @@ def admin():
 
     message = None
     msg_type = None
+
+    if request.args.get("deleted"):
+        message = "Deleted successfully."
+        msg_type = "success"
 
     if request.method == "POST":
         api_key = request.form.get("api_key", "").strip()
@@ -367,9 +423,18 @@ def admin():
             message = "Please enter a valid API key."
             msg_type = "error"
 
+    db = get_db()
     current_key = get_api_key()
+    reports = db.execute("""
+        SELECT r.id as report_id, r.reason, r.reported_at,
+               p.id as proposal_id, p.business_name, p.proposal_type, p.created_at
+        FROM reports r
+        JOIN proposals p ON r.proposal_id = p.id
+        ORDER BY r.reported_at DESC
+    """).fetchall()
     return render_template("admin.html", authorized=True, message=message,
-                           msg_type=msg_type, masked_key=mask_key(current_key))
+                           msg_type=msg_type, masked_key=mask_key(current_key),
+                           reports=reports)
 
 
 if __name__ == "__main__":
