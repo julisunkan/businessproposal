@@ -1,0 +1,87 @@
+Build a Flask web app called "Low-Content Book Creator" with the following specifications:
+
+1️⃣ Features:
+- Single book PDF generation with:
+- Custom header text
+- Auto page numbering (toggle on/off)
+- User-specified page count
+- Lines, dot grid, or graph paper layout
+- Optional random journal prompts (from predefined SQLite database)
+- KDP trim size validation (allowed: 5x8, 5.5x8.5, 6x9, 7x10, 8x10, 8.5x11 inches)
+- Bulk book PDF generation via CSV upload with columns:
+- title
+- header
+- pages
+- trim_width
+- trim_height
+- Random book title generator (rule-based, no AI needed)
+- Page preview before download (embed PDF in browser)
+- SQLite database for:
+- storing prompts
+- saving templates and previous exports (optional)
+- Exports saved in /exports folder with unique UUID filenames
+- Free, no login, no registration, no admin
+- Responsive simple UI using HTML + Tailwind CSS
+
+2️⃣ Backend:
+- Use Flask framework
+- SQLite as database (local file)
+- ReportLab for PDF generation
+- Pillow for image processing (for coloring books)
+- Routes:
+- "/" → Homepage with options
+- "/notebook" → Generate single notebook
+- "/planner" → Generate planner
+- "/bulk" → Bulk book generation via CSV
+- "/preview/<filename>" → Page preview
+- "/generate-title" → Random book title generator API
+- "/generate-prompts" → Random prompt generator API
+- Use functions for modularity:
+- generate_journal(filename, pages, header, trim_width, trim_height, prompts)
+- validate_trim_size(width, height)
+- generate_random_title()
+- get_random_prompts(category, limit)
+- Bulk route creates ZIP with all PDFs and returns download link
+
+3️⃣ Frontend:
+- index.html:
+- Buttons/links for:
+- Create Notebook
+- Create Planner
+- Bulk CSV Upload
+- Spine Width Calculator
+- Quick explanation of KDP trim size validation
+- notebook.html/planner.html:
+- Form inputs:
+- Page count
+- Trim size dropdown
+- Header text
+- Toggle page numbers
+- Prompt category dropdown
+- Generate Preview button
+- preview.html:
+- Embed generated PDF in iframe
+- Download button
+- bulk.html:
+- CSV file upload form
+- Generate Bulk button
+
+4️⃣ Utilities:
+- Auto-generate unique filenames using UUID
+- Clear /exports folder periodically
+- Optional: margin safety check (minimum 0.25 inches)
+- Optional: spine width calculator (page_count * 0.002252 inches)
+
+5️⃣ Deployment:
+- Should run on Replit
+- Single command: `flask run` or Replit default
+- Ensure all static files and templates are included
+- Minimal external dependencies (Flask, ReportLab, Pillow)
+
+6️⃣ Code Quality:
+- Modular and readable
+- Comment major sections
+- Use best practices for Flask routing and file handling
+- Include sample prompts in SQLite (e.g., gratitude, productivity, self-care)
+
+Build the full working starter project according to this specification.

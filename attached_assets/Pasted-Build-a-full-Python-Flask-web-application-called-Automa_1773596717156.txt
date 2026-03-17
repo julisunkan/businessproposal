@@ -1,0 +1,242 @@
+Build a full **Python Flask web application** called **"Automated Business Proposal Generator"**.
+
+The application should use:
+
+* Flask (Python backend)
+* SQLite database
+* Groq API for AI text generation
+* HTML/CSS/JavaScript frontend
+* Progressive Web App (PWA) features
+
+Do NOT use login or user registration.
+
+---
+
+APP FEATURES
+
+1. Home Page
+
+The homepage should contain a form where the user enters:
+
+* Business Name
+* Service / Product
+* Target Market
+* Proposal Type (Dropdown)
+
+Proposal types:
+
+* Startup Proposal
+* Marketing Proposal
+* Investment Proposal
+* Partnership Proposal
+
+When submitted, the app sends the data to the backend and generates a professional business proposal using the Groq API.
+
+The AI prompt should generate structured sections:
+
+* Executive Summary
+* Business Overview
+* Market Analysis
+* Strategy and Implementation
+* Budget Estimate
+* Expected Results
+* Conclusion
+
+After generation, the proposal should be saved in the SQLite database.
+
+---
+
+2. Proposal Editing Page
+
+After generating a proposal, redirect the user to an editing page:
+
+/edit/<proposal_id>
+
+This page should contain:
+
+* A large textarea containing the generated proposal
+* A "Save Changes" button
+* Download buttons for:
+
+Download Word (.docx)
+Download PDF
+Download PowerPoint (.pptx)
+
+The user should be able to edit the proposal before downloading.
+
+---
+
+3. Server-Side Downloads
+
+All downloads must be generated server-side using Python.
+
+Libraries to use:
+
+python-docx → Word export
+reportlab → PDF export
+python-pptx → PowerPoint export
+
+Do NOT use browser blobs.
+
+Each download should be a Flask route like:
+
+/download-docx/
+/download-pdf/
+/download-ppt/
+
+---
+
+4. SQLite Database
+
+Use SQLite with two tables.
+
+Table: settings
+
+id INTEGER PRIMARY KEY
+api_key TEXT
+
+Table: proposals
+
+id INTEGER PRIMARY KEY AUTOINCREMENT
+business_name TEXT
+proposal_type TEXT
+content TEXT
+created_at TEXT
+
+---
+
+5. Admin Page
+
+Create an admin page:
+
+/admin?key=SECRETKEY
+
+This page allows the admin to save the Groq API key into the database.
+
+No login system should be used.
+
+---
+
+6. Proposal Dashboard
+
+Create an admin dashboard page:
+
+/dashboard
+
+This page lists all generated proposals in a table.
+
+Columns:
+
+ID
+Business Name
+Proposal Type
+Created Date
+Action (Edit link)
+
+---
+
+7. Inline Notifications (NO POPUPS)
+
+Do NOT use alert().
+
+Use an inline message system that displays notifications at the top of the page such as:
+
+* Proposal generated successfully
+* Proposal saved
+* Error messages
+
+Use CSS classes for:
+
+msg-success
+msg-error
+
+---
+
+8. Progressive Web App (PWA)
+
+The application must support installation as a PWA.
+
+Add:
+
+manifest.json
+service-worker.js
+
+Manifest settings:
+
+App Name: Business Proposal Generator
+Short Name: ProposalAI
+Display: standalone
+
+Add png icons and maskable png icons:
+
+192x192
+512x512
+
+The service worker should cache:
+
+/
+/static/style.css
+
+Register the service worker in the main HTML template.
+
+---
+
+9. UI Design
+
+Use simple clean UI with:
+
+* CSS styling
+* centered layout
+* responsive mobile-friendly design
+
+Include:
+
+message notification bar
+form styling
+dashboard table styling
+
+---
+
+10. Project Structure
+
+Generate this project structure:
+
+app.py
+database.db
+requirements.txt
+
+/templates
+index.html
+edit.html
+dashboard.html
+admin.html
+
+/static
+style.css
+manifest.json
+service-worker.js
+/icons
+
+---
+
+11. Requirements File
+
+requirements.txt should include:
+
+Flask
+groq
+python-docx
+reportlab
+python-pptx
+
+---
+
+12. Ensure the app runs with:
+
+python app.py
+
+and uses Flask default port.
+
+---
+
+Write the FULL working code for all files.
