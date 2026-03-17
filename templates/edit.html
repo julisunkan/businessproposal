@@ -5,9 +5,9 @@
 {% if message %}
 <div class="msg-{{ msg_type }}">
   {% if msg_type == 'success' %}
-  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
   {% else %}
-  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
   {% endif %}
   {{ message }}
 </div>
@@ -15,67 +15,89 @@
 
 {% if request.args.get('reported') %}
 <div class="msg-success">
-  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
-  Thank you — your report has been submitted and will be reviewed by an admin.
+  <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+  Thank you — your report has been submitted and will be reviewed by our team.
 </div>
 {% endif %}
 
-<div class="dash-header">
+<!-- Header card -->
+<div class="edit-header-card">
   <div>
-    <h1 class="page-title">{{ proposal.business_name }}</h1>
-    <div class="edit-meta">
+    <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.5rem;">
+      <h1 class="page-title" style="margin:0;">{{ proposal.business_name }}</h1>
       <span class="badge">{{ proposal.proposal_type }}</span>
-      <span>Created: {{ proposal.created_at }}</span>
-      <span>ID: #{{ proposal.id }}</span>
-      {% if proposal.service %}<span>Service: <strong>{{ proposal.service }}</strong></span>{% endif %}
-      {% if proposal.target_market %}<span>Market: <strong>{{ proposal.target_market }}</strong></span>{% endif %}
+    </div>
+    <div class="edit-meta">
+      <span class="edit-meta-pill">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        {{ proposal.created_at }}
+      </span>
+      <span class="edit-meta-pill">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>
+        ID #{{ proposal.id }}
+      </span>
+      {% if proposal.service %}
+      <span class="edit-meta-pill">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <strong>{{ proposal.service }}</strong>
+      </span>
+      {% endif %}
+      {% if proposal.target_market %}
+      <span class="edit-meta-pill">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+        <strong>{{ proposal.target_market }}</strong>
+      </span>
+      {% endif %}
     </div>
   </div>
   <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-sm">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
     Dashboard
   </a>
 </div>
 
+<!-- Editor card -->
 <div class="card">
   <form method="POST" action="{{ url_for('edit', proposal_id=proposal.id) }}">
     <div class="form-group">
-      <label for="content">Proposal Content <span style="font-weight:400;color:var(--muted);">(edit freely, then save)</span></label>
+      <label for="content">Proposal Content <span style="font-weight:400;text-transform:none;color:var(--muted);font-size:.8rem;">(edit freely, then save)</span></label>
       <textarea id="content" name="content">{{ proposal.content }}</textarea>
     </div>
     <button type="submit" class="btn btn-success">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
       Save Changes
     </button>
   </form>
 
+  <!-- Download grid -->
   <div class="download-group">
-    <a href="{{ url_for('download_docx', proposal_id=proposal.id) }}" class="btn btn-outline">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Download Word (.docx)
+    <a href="{{ url_for('download_docx', proposal_id=proposal.id) }}" class="download-btn download-btn-docx">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Word (.docx)
     </a>
-    <a href="{{ url_for('download_pdf', proposal_id=proposal.id) }}" class="btn btn-outline">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      Download PDF
+    <a href="{{ url_for('download_pdf', proposal_id=proposal.id) }}" class="download-btn download-btn-pdf">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      PDF
     </a>
-    <a href="{{ url_for('download_ppt', proposal_id=proposal.id) }}" class="btn btn-outline">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      Download PowerPoint (.pptx)
+    <a href="{{ url_for('download_ppt', proposal_id=proposal.id) }}" class="download-btn download-btn-ppt">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      PowerPoint (.pptx)
     </a>
   </div>
 </div>
 
+<!-- Report section -->
 <div class="report-section">
   <button class="report-toggle" onclick="document.getElementById('report-form').classList.toggle('hidden')" type="button">
-    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     Report Inappropriate Content
   </button>
   <div id="report-form" class="hidden report-form-inner">
     <p class="report-hint">If this AI-generated content is offensive, harmful, or inappropriate, please let us know. Reports are reviewed by our admin team.</p>
     <form method="POST" action="{{ url_for('report', proposal_id=proposal.id) }}">
       <div class="form-group" style="margin-bottom:.75rem;">
-        <label for="reason" style="font-size:.85rem;">Reason for reporting</label>
-        <select id="reason" name="reason" required style="font-size:.9rem;">
+        <label for="reason" style="font-size:.78rem;">Reason for reporting</label>
+        <select id="reason" name="reason" required>
           <option value="" disabled selected>Select a reason…</option>
           <option value="Offensive or harmful language">Offensive or harmful language</option>
           <option value="Misinformation or false claims">Misinformation or false claims</option>
@@ -85,7 +107,7 @@
         </select>
       </div>
       <button type="submit" class="btn btn-report btn-sm">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
         Submit Report
       </button>
     </form>
