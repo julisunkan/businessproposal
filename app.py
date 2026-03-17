@@ -209,7 +209,7 @@ def download_docx(proposal_id):
         doc.add_paragraph(f"Target Market: {proposal['target_market']}")
     doc.add_paragraph("")
 
-    for line in proposal["content"].split("\n"):
+    for line in (proposal["content"] or "").split("\n"):
         line = line.strip()
         if not line:
             doc.add_paragraph("")
@@ -266,7 +266,7 @@ def download_pdf(proposal_id):
         story.append(Paragraph(f"Target Market: {proposal['target_market']}", sub_style))
     story.append(Spacer(1, 0.2 * inch))
 
-    for line in proposal["content"].split("\n"):
+    for line in (proposal["content"] or "").split("\n"):
         line = line.strip()
         if not line:
             story.append(Spacer(1, 0.08 * inch))
@@ -322,7 +322,7 @@ def download_ppt(proposal_id):
             for run in para.runs:
                 run.font.size = Pt(11)
 
-    for line in proposal["content"].split("\n"):
+    for line in (proposal["content"] or "").split("\n"):
         line = line.strip()
         if line.startswith("## ") or line.startswith("# "):
             if current_section and section_content:
@@ -379,7 +379,7 @@ def delete_report(report_id):
     db = get_db()
     db.execute("DELETE FROM reports WHERE id = ?", (report_id,))
     db.commit()
-    return redirect(url_for("admin") + "?key=" + ADMIN_SECRET + "&deleted=1")
+    return redirect(url_for("admin", key=ADMIN_SECRET, deleted=1))
 
 
 @app.route("/admin/delete-proposal/<int:proposal_id>", methods=["POST"])
@@ -391,7 +391,7 @@ def delete_proposal(proposal_id):
     db.execute("DELETE FROM reports WHERE proposal_id = ?", (proposal_id,))
     db.execute("DELETE FROM proposals WHERE id = ?", (proposal_id,))
     db.commit()
-    return redirect(url_for("admin") + "?key=" + ADMIN_SECRET + "&deleted=1")
+    return redirect(url_for("admin", key=ADMIN_SECRET, deleted=1))
 
 
 @app.route("/admin", methods=["GET", "POST"])

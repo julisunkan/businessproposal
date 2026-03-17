@@ -32,7 +32,7 @@
   </div>
   {% endif %}
 
-  <form method="POST" action="{{ url_for('admin') }}?key=julisunkan">
+  <form method="POST" action="{{ url_for('admin', key='julisunkan') }}">
     <div class="form-group">
       <label for="api_key">Groq API Key</label>
       <input type="password" id="api_key" name="api_key"
@@ -82,13 +82,13 @@
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           View Proposal
         </a>
-        <form method="POST" action="{{ url_for('delete_report', report_id=r.report_id) }}?key=julisunkan" style="display:inline;" onsubmit="return confirm('Dismiss this report?')">
+        <form method="POST" action="{{ url_for('delete_report', report_id=r.report_id, key='julisunkan') }}" style="display:inline;" onsubmit="return confirm('Dismiss this report?')">
           <button type="submit" class="btn btn-outline btn-sm">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
             Dismiss Report
           </button>
         </form>
-        <form method="POST" action="{{ url_for('delete_proposal', proposal_id=r.proposal_id) }}?key=julisunkan" style="display:inline;" onsubmit="return confirm('Permanently delete this proposal and all its reports?')">
+        <form method="POST" action="{{ url_for('delete_proposal', proposal_id=r.proposal_id, key='julisunkan') }}" style="display:inline;" onsubmit="return confirm('Permanently delete this proposal and all its reports?')">
           <button type="submit" class="btn btn-danger btn-sm">
             <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
             Delete Proposal
