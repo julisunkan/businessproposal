@@ -1,6 +1,6 @@
 {
   "name": "Business Proposal Generator",
-  "short_name": "ProposalAI",
+  "short_name": "AI Proposal Gen",
   "description": "Generate professional business proposals with AI",
   "start_url": "/",
   "display": "standalone",
